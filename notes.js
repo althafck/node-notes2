@@ -2,12 +2,58 @@ console.log('notes.js works!!!');
 
 module.exports.age = 25;
 
-var addNote = (title, body) => {
-    console.log('Adding Note: ', title, body);
+const fs = require('fs')
+
+var fetchNotes = () => {
+    try {
+        return JSON.parse(fs.readFileSync('notes.json'));
+    }
+    catch (e) {
+        return [];
+    }
 };
 
+var saveNotes = (notes) => {
+    fs.writeFileSync('notes.json',JSON.stringify(notes));
+};
+
+var addNote = (title, body) => {
+    var notes = fetchNotes();
+    var note = {
+        title,
+        body
+    };
+
+    var duplicateNotes = notes.filter((note) => note.title ===  title);
+    
+    if(duplicateNotes.length === 0) {
+        notes.push(note);
+        saveNotes(notes);
+        return note;
+    } else {
+    }
+
+};
+
+
+
+
+
+
 var removeNote = (title) => {
-    console.log('Post being removed: ', title);
+    var notes = fetchNotes();
+    var note = {
+        title
+    };
+    var filteredNotes = notes.filter((note) => note.title !==  title);
+
+    if (filteredNotes.length !== notes.length) {
+        saveNotes(filteredNotes);
+        return note;
+    } else {
+        
+    }
+
 };
 
 var listNote = () => {
